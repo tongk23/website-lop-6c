@@ -1,0 +1,54 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user information including role and grade.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "description": "User's full name" },
+        "role": { "type": "string", "enum": ["student", "teacher"], "description": "User's role" },
+        "grade": { "type": "string", "description": "User's grade (for students)" },
+        "email": { "type": "string", "format": "email", "description": "User's email" },
+        "uid": { "type": "string", "description": "User's unique ID from Firebase Auth" }
+      },
+      "required": ["fullName", "role", "email", "uid"]
+    },
+    "ForumPost": {
+      "title": "Forum Post",
+      "description": "Stores posts and comments in the class forum.",
+      "type": "object",
+      "properties": {
+        "author": { "type": "string", "description": "Author's full name" },
+        "authorUid": { "type": "string", "description": "Author's unique ID" },
+        "role": { "type": "string", "enum": ["student", "teacher"], "description": "Author's role" },
+        "content": { "type": "string", "description": "Post content" },
+        "timestamp": { "type": "string", "format": "date-time", "description": "When the post was created" },
+        "likes": { "type": "number", "description": "Number of likes" },
+        "isMemory": { "type": "boolean", "description": "Whether it's a memory" },
+        "isReported": { "type": "boolean", "description": "Whether it's reported" },
+        "attachments": { 
+          "type": "array", 
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["image", "file", "video"] },
+              "url": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["author", "authorUid", "role", "content", "timestamp", "likes"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document"
+    },
+    "/posts/{postId}": {
+      "schema": "ForumPost",
+      "description": "Forum post document"
+    }
+  }
+}
